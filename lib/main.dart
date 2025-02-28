@@ -1,8 +1,9 @@
 import 'package:BookMate_Pro/view_model/author_info_view_model/author_books_view_model.dart';
 import 'package:BookMate_Pro/view_model/booksList_view_model.dart';
+import 'package:BookMate_Pro/view_model/deep_seek_summary_view_model.dart';
 import 'package:BookMate_Pro/view_model/google_books_view_model.dart';
 import 'package:BookMate_Pro/view_model/tab_bar_view_model.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utils/routes/routes.dart';
 import 'utils/routes/routes_names.dart';
 import 'package:BookMate_Pro/view_model/bottom_navigation_bar_view_model.dart';
@@ -11,8 +12,14 @@ import 'package:provider/provider.dart';
 import 'package:BookMate_Pro/view_model/app_themes_view_model.dart';
 import 'resources/app_themes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseFirestore.instance.settings =
+      const Settings(persistenceEnabled: true);
+
   runApp(ScreenUtilInit(
     designSize: const Size(375, 812),
     minTextAdapt: true,
@@ -25,6 +32,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => GoogleBooksViewModel()),
         ChangeNotifierProvider(create: (_) => TabBarViewModel()),
         ChangeNotifierProvider(create: (_) => AuthorBooksViewModel()),
+        ChangeNotifierProvider(create: (_) => DeepSeekSummaryViewModel()),
       ],
       child: const MyApp(),
     ),
