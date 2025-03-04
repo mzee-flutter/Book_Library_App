@@ -4,6 +4,7 @@ import 'package:BookMate_Pro/view_model/chapter_response_view_model.dart';
 import 'package:BookMate_Pro/view_model/deep_seek_summary_view_model.dart';
 import 'package:BookMate_Pro/view_model/google_books_view_model.dart';
 import 'package:BookMate_Pro/view_model/tab_bar_view_model.dart';
+import 'package:BookMate_Pro/view_model/translation_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utils/routes/routes.dart';
 import 'utils/routes/routes_names.dart';
@@ -34,7 +35,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => TabBarViewModel()),
         ChangeNotifierProvider(create: (_) => AuthorBooksViewModel()),
         ChangeNotifierProvider(create: (_) => DeepSeekSummaryViewModel()),
-        ChangeNotifierProvider(create: (_) => ChapterResponseViewModel())
+        ChangeNotifierProvider(create: (_) => ChapterResponseViewModel()),
+        ChangeNotifierProvider(create: (_) => TranslationViewModel())
       ],
       child: const MyApp(),
     ),
