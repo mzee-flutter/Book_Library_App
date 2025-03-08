@@ -1,5 +1,4 @@
 import 'package:BookMate_Pro/view_model/author_info_view_model/author_books_view_model.dart';
-import 'package:BookMate_Pro/view_model/booksList_view_model.dart';
 import 'package:BookMate_Pro/view_model/chapter_response_view_model.dart';
 import 'package:BookMate_Pro/view_model/deep_seek_summary_view_model.dart';
 import 'package:BookMate_Pro/view_model/google_books_view_model.dart';
@@ -30,7 +29,6 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => AppThemesViewModel()),
         ChangeNotifierProvider(create: (_) => BottomIconNavigationViewModel()),
-        ChangeNotifierProvider(create: (_) => BooksListViewModel()),
         ChangeNotifierProvider(create: (_) => GoogleBooksViewModel()),
         ChangeNotifierProvider(create: (_) => TabBarViewModel()),
         ChangeNotifierProvider(create: (_) => AuthorBooksViewModel()),
