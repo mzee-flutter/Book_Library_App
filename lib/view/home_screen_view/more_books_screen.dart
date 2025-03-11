@@ -1,11 +1,12 @@
 import 'package:BookMate_Pro/view/single_book_screen/single_book_screen.dart';
+import 'package:BookMate_Pro/view_model/more_books_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../utils/custom_book_card/small_book_card.dart';
-import '../../view_model/google_books_view_model.dart';
 
 class MoreBooksScreen extends StatefulWidget {
-  const MoreBooksScreen({super.key});
+  const MoreBooksScreen({super.key, required this.category});
+  final String category;
 
   @override
   MoreBooksScreenState createState() => MoreBooksScreenState();
@@ -16,9 +17,9 @@ class MoreBooksScreenState extends State<MoreBooksScreen> {
   initState() {
     super.initState();
     final booksProvider =
-        Provider.of<GoogleBooksViewModel>(context, listen: false);
+        Provider.of<MoreBooksViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      booksProvider.fetchGoogleBooksList();
+      booksProvider.fetchMoreBooksList(widget.category, isNewCategory: true);
     });
   }
 
@@ -39,13 +40,13 @@ class MoreBooksScreenState extends State<MoreBooksScreen> {
         ),
       ),
       body: SafeArea(
-        child: Consumer<GoogleBooksViewModel>(
+        child: Consumer<MoreBooksViewModel>(
           builder: (context, booksProvider, child) {
             return NotificationListener<ScrollNotification>(
               onNotification: (scrollInfo) {
                 if (_isScrollNearToEnd(scrollInfo)) {
                   if (!booksProvider.isFetching) {
-                    booksProvider.fetchGoogleBooksList();
+                    booksProvider.fetchMoreBooksList(widget.category);
                   }
                 }
                 return true;
