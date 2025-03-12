@@ -81,13 +81,26 @@ class SearchScreenState extends State<SearchScreen> {
                   .bodyLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: bookCategories.entries
-                  .map((entry) =>
-                      CategoryCard(category: entry.key, icon: entry.value))
-                  .toList(),
+            SizedBox(
+              height: 10.r,
+            ),
+            Container(
+              color: Colors.blue,
+              height: 420,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: bookCategories.entries
+                          .map((entry) => CategoryCard(
+                              category: entry.key, icon: entry.value))
+                          .toList(),
+                    ),
+                  ],
+                ),
+              ),
             )
           ],
         ),
@@ -100,26 +113,34 @@ class CategoryCard extends StatelessWidget {
   final String category;
   final IconData icon;
 
-  const CategoryCard({required this.category, required this.icon});
+  const CategoryCard({super.key, required this.category, required this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      elevation: 2,
       child: Container(
-        width: 120,
-        height: 120,
-        padding: EdgeInsets.all(10),
-        child: Column(
+        padding: const EdgeInsets.all(10),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 30, color: Colors.blue),
-            SizedBox(height: 10),
+            Icon(
+              icon,
+              size: Theme.of(context)
+                  .bottomNavigationBarTheme
+                  .selectedIconTheme
+                  ?.size,
+              color:
+                  Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+            ),
+            SizedBox(
+              width: 15.r,
+            ),
             Text(
               category,
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
