@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../utils/books_category_and_more.dart';
-import '../../utils/routes/routes_names.dart';
 import '../../view_model/converstion_books_view_model.dart';
 import '../../view_model/google_books_view_model.dart';
 
@@ -38,9 +37,6 @@ class HomeScreenBodyViewState extends State<HomeScreenBodyView> {
 
   @override
   Widget build(BuildContext context) {
-    final bPro = Provider.of<GoogleBooksViewModel>(context, listen: false);
-    final converPro =
-        Provider.of<ConversationBooksViewModel>(context, listen: false);
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -59,10 +55,14 @@ class HomeScreenBodyViewState extends State<HomeScreenBodyView> {
                 categoryIcon: Icons.lightbulb_outline,
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              MoreBooksScreen(listOfBooks: bPro.allBooks)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const MoreBooksScreen(
+                        category: 'self_help',
+                        name: 'Top Self-Help Books',
+                      ),
+                    ),
+                  );
                 },
               ),
               Container(
@@ -120,17 +120,21 @@ class HomeScreenBodyViewState extends State<HomeScreenBodyView> {
                   },
                 ),
               ),
+              SizedBox(
+                height: 10.r,
+              ),
               BooksCategoryAndMore(
-                  categoryName: 'Conversation & Communication',
-                  categoryDescription:
-                      'Master the art of meaningful conversations and effective communication.',
-                  categoryIcon: FontAwesomeIcons.comment,
+                  categoryName: 'Success and Career',
+                  categoryDescription: 'From Dreams to Reality.',
+                  categoryIcon: FontAwesomeIcons.award,
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) =>
-                            MoreBooksScreen(listOfBooks: converPro.allBooks),
+                        builder: (_) => const MoreBooksScreen(
+                          category: 'success',
+                          name: 'Success and Career',
+                        ),
                       ),
                     );
                   }),
@@ -198,3 +202,5 @@ class HomeScreenBodyViewState extends State<HomeScreenBodyView> {
     );
   }
 }
+
+// Master the art of meaningful conversations and effective communication.
