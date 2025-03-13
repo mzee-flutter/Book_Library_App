@@ -8,7 +8,7 @@ class SearchScreenAppBar extends StatelessWidget
     return AppBar(
       automaticallyImplyLeading: false,
       title: Text(
-        'Explore..',
+        'Explore...',
         style: Theme.of(context).textTheme.displayLarge,
       ),
     );
