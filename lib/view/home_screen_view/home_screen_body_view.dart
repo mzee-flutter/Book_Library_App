@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../utils/books_category_and_more.dart';
-import '../../view_model/converstion_books_view_model.dart';
+import '../../view_model/success_books_view_model.dart';
 import '../../view_model/google_books_view_model.dart';
 
 class HomeScreenBodyView extends StatefulWidget {
@@ -23,10 +23,10 @@ class HomeScreenBodyViewState extends State<HomeScreenBodyView> {
     final booksProvider =
         Provider.of<GoogleBooksViewModel>(context, listen: false);
     final conversationBookProvider =
-        Provider.of<ConversationBooksViewModel>(context, listen: false);
+        Provider.of<SuccessBooksViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       booksProvider.fetchGoogleBooksList();
-      conversationBookProvider.fetchGoogleConversationBooksList();
+      conversationBookProvider.fetchSuccessBooksList();
     });
   }
 
@@ -140,7 +140,7 @@ class HomeScreenBodyViewState extends State<HomeScreenBodyView> {
                   }),
               Container(
                 height: 310.h,
-                child: Consumer<ConversationBooksViewModel>(
+                child: Consumer<SuccessBooksViewModel>(
                   builder: (context, conversationBooksProvider, child) {
                     return NotificationListener<ScrollNotification>(
                       onNotification: (scrollInfo) {
@@ -148,7 +148,7 @@ class HomeScreenBodyViewState extends State<HomeScreenBodyView> {
                           if (!conversationBooksProvider.isFetching &&
                               conversationBooksProvider.allBooks.length < 30) {
                             conversationBooksProvider
-                                .fetchGoogleConversationBooksList(); // Trigger load more books
+                                .fetchSuccessBooksList(); // Trigger load more books
                           }
                         }
                         return true;
