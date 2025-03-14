@@ -1,9 +1,12 @@
 import 'package:BookMate_Pro/view_model/author_info_view_model/author_books_view_model.dart';
+import 'package:BookMate_Pro/view_model/search_view_model.dart';
+import 'package:BookMate_Pro/view_model/success_books_view_model.dart';
 import 'package:BookMate_Pro/view_model/deep_seek_summary_view_model.dart';
 import 'package:BookMate_Pro/view_model/google_books_view_model.dart';
+import 'package:BookMate_Pro/view_model/more_books_view_model.dart';
 import 'package:BookMate_Pro/view_model/tab_bar_view_model.dart';
 import 'package:BookMate_Pro/view_model/language_dropdown_view_model.dart';
-import 'package:BookMate_Pro/view_model/testing_for_responses_view_model.dart';
+import 'package:BookMate_Pro/view_model/responses_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utils/routes/routes.dart';
 import 'utils/routes/routes_names.dart';
@@ -34,7 +37,10 @@ void main() async {
         ChangeNotifierProvider(create: (_) => AuthorBooksViewModel()),
         ChangeNotifierProvider(create: (_) => DeepSeekSummaryViewModel()),
         ChangeNotifierProvider(create: (_) => LanguageDropDownViewModel()),
-        ChangeNotifierProvider(create: (_) => TestingForResponseViewModel())
+        ChangeNotifierProvider(create: (_) => ResponsesViewModel()),
+        ChangeNotifierProvider(create: (_) => SuccessBooksViewModel()),
+        ChangeNotifierProvider(create: (_) => MoreBooksViewModel()),
+        ChangeNotifierProvider(create: (_) => SearchViewModel()),
       ],
       child: const MyApp(),
     ),
