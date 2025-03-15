@@ -16,6 +16,12 @@ class SearchScreen extends StatefulWidget {
 
 class SearchScreenState extends State<SearchScreen> {
   final ClickableCategoryCards _cards = ClickableCategoryCards();
+
+  bool _isScrollNearToEnd(ScrollNotification scrollInfo) {
+    return scrollInfo.metrics.pixels >=
+        (scrollInfo.metrics.maxScrollExtent * 0.95);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,6 +54,9 @@ class SearchScreenState extends State<SearchScreen> {
                       size: 27,
                     ),
                   ),
+                  onChanged: (title) {
+                    searchProvider.searchBooks(title);
+                  },
                   onFieldSubmitted: (value) {
                     final title = searchProvider.controller.text.trim();
                     title.isEmpty
@@ -58,26 +67,39 @@ class SearchScreenState extends State<SearchScreen> {
                 Container(
                   color: Colors.orangeAccent,
                   height: 420,
-                  child: ListView.builder(
-                    itemCount: searchProvider.booksList.length +
-                        (searchProvider.isFetching ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (searchProvider.isFetching) {
-                        return const Center(child: CircularProgressIndicator());
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (scrollInfo) {
+                      if (_isScrollNearToEnd(scrollInfo)) {
+                        final title = searchProvider.controller.text.trim();
+                        if (title.isNotEmpty) {
+                          searchProvider.fetchBooksBySearch(title);
+                        }
                       }
-                      final book = searchProvider.booksList[index];
-                      return SmallBookCard(
-                          book: book,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    SingleBookScreen(fullBook: book),
-                              ),
-                            );
-                          });
+                      return true;
                     },
+                    child: ListView.builder(
+                      itemCount: searchProvider.booksList.length +
+                          (searchProvider.isFetching ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index == searchProvider.booksList.length &&
+                            searchProvider.isFetching) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        final book = searchProvider.booksList[index];
+                        return SmallBookCard(
+                            book: book,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      SingleBookScreen(fullBook: book),
+                                ),
+                              );
+                            });
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(
