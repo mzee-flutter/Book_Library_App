@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../view_model/author_info_view_model/author_books_view_model.dart';
+import '../../view_model/book_mark_view_model.dart';
 import '../../view_model/deep_seek_summary_view_model.dart';
 import '../../view_model/tab_bar_view_model.dart';
 import 'package:BookMate_Pro/utils/book_cover_sizes.dart';
@@ -18,6 +19,7 @@ class SingleBookScreen extends StatefulWidget {
   });
 
   final Book fullBook;
+
   @override
   SingleBookScreenState createState() => SingleBookScreenState();
 }
@@ -62,9 +64,7 @@ class SingleBookScreenState extends State<SingleBookScreen>
                   backgroundColor:
                       themeProvider.getSliverAppBarBackgroundColor(context),
                   clipBehavior: Clip.none,
-                  iconTheme: const IconThemeData(
-                    size: 25,
-                  ),
+                  iconTheme: const IconThemeData(size: 25),
                   expandedHeight: 300,
                   pinned: true,
                   centerTitle: true,
@@ -75,45 +75,81 @@ class SingleBookScreenState extends State<SingleBookScreen>
                               (300 - kToolbarHeight);
                       double opacity = (1 - percent).clamp(0.0, 1.0);
 
-                      return FlexibleSpaceBar(
-                        centerTitle: true,
-                        title: AnimatedOpacity(
-                          opacity: opacity,
-                          duration: const Duration(milliseconds: 200),
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: Text(
-                                widget.fullBook.volumeInfo?.title ?? 'Unknown',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          FlexibleSpaceBar(
+                            centerTitle: true,
+                            title: AnimatedOpacity(
+                              opacity: opacity,
+                              duration: const Duration(milliseconds: 200),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: Text(
+                                    widget.fullBook.volumeInfo?.title ??
+                                        'Unknown',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            background: Center(
+                              child: BookCoverSize.large(
+                                bookCover: CachedNetworkImage(
+                                  imageUrl: widget
+                                          .fullBook
+                                          .volumeInfo
+                                          ?.imageLinks
+                                          ?.getHighQualityImageUrl ??
+                                      'No_image',
+                                  fit: BoxFit.cover,
+                                  filterQuality: FilterQuality.high,
+                                  placeholder: (context, url) =>
+                                      Image.asset('images/bookcover.png'),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset('images/placeholder.png'),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        background: Center(
-                          child: BookCoverSize.large(
-                            bookCover: CachedNetworkImage(
-                              imageUrl: widget.fullBook.volumeInfo?.imageLinks
-                                      ?.getHighQualityImageUrl ??
-                                  'No_image',
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.high,
-                              placeholder: (context, url) =>
-                                  Image.asset('images/bookcover.png'),
-                              errorWidget: (context, url, error) =>
-                                  Image.asset('images/placeholder.png'),
-                            ),
+                          Consumer<BookMarkViewModel>(
+                            builder: (context, bookMarkProvider, child) {
+                              return Positioned(
+                                bottom: -25.r,
+                                right: 25.r,
+                                child: FloatingActionButton(
+                                  onPressed: () {
+                                    ///checking that the book is add or not to fire store
+                                    ///also checking the icon toggling
+                                    bookMarkProvider
+                                        .addBookMark(widget.fullBook);
+                                  },
+                                  shape: const CircleBorder(),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.surface,
+                                  elevation: 5,
+                                  child: Icon(
+                                    bookMarkProvider.isBookmarked
+                                        ? Icons.bookmark_rounded
+                                        : Icons.bookmark_border,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        ),
+                        ],
                       );
                     },
                   ),
@@ -121,15 +157,11 @@ class SingleBookScreenState extends State<SingleBookScreen>
               },
             ),
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: 20.h,
-              ),
+              child: SizedBox(height: 20.h),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.r,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 20.r),
                 child: Consumer<TabBarViewModel>(
                   builder: (context, tabProvider, child) {
                     return Padding(
@@ -139,14 +171,12 @@ class SingleBookScreenState extends State<SingleBookScreen>
                         children: [
                           Text(
                             fullBook.volumeInfo?.title ?? 'Unknown',
-                            style:
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
-                            height: 15.r,
-                          ),
+                          SizedBox(height: 15.r),
                           Text(
                             fullBook.volumeInfo?.subtitle ??
                                 'Subtitle not available',
@@ -158,17 +188,13 @@ class SingleBookScreenState extends State<SingleBookScreen>
                                     fontStyle: FontStyle.italic,
                                     fontFamily: 'Serif'),
                           ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
+                          SizedBox(height: 15.h),
                           Text(
                             fullBook.volumeInfo?.authors?.join(', ') ??
                                 'Unknown',
                             style: const TextStyle(fontFamily: 'Roboto'),
                           ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
+                          SizedBox(height: 15.h),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: TabBar(
@@ -181,20 +207,17 @@ class SingleBookScreenState extends State<SingleBookScreen>
                                   .bottomNavigationBarTheme
                                   .unselectedItemColor,
                               indicator: UnderlineTabIndicator(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide: BorderSide(
-                                    width: 3,
-                                    color: Theme.of(context).primaryColor,
-                                  )),
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide(
+                                  width: 3,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
                               labelStyle: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
-                                  ?.copyWith(
-                                    fontSize: 17,
-                                  ),
-                              labelPadding: EdgeInsets.only(
-                                right: 18.r,
-                              ),
+                                  ?.copyWith(fontSize: 17),
+                              labelPadding: EdgeInsets.only(right: 18.r),
                               tabs: const [
                                 Tab(text: 'About'),
                                 Tab(text: 'Outline'),
@@ -205,9 +228,7 @@ class SingleBookScreenState extends State<SingleBookScreen>
                               },
                             ),
                           ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
+                          SizedBox(height: 20.h),
                           IndexedStack(
                             index: tabProvider.selectedTab,
                             children: [
