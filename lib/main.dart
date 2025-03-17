@@ -1,4 +1,5 @@
 import 'package:BookMate_Pro/view_model/author_info_view_model/author_books_view_model.dart';
+import 'package:BookMate_Pro/view_model/book_mark_view_model.dart';
 import 'package:BookMate_Pro/view_model/search_view_model.dart';
 import 'package:BookMate_Pro/view_model/success_books_view_model.dart';
 import 'package:BookMate_Pro/view_model/deep_seek_summary_view_model.dart';
@@ -41,6 +42,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SuccessBooksViewModel()),
         ChangeNotifierProvider(create: (_) => MoreBooksViewModel()),
         ChangeNotifierProvider(create: (_) => SearchViewModel()),
+        ChangeNotifierProvider(create: (_) => BookMarkViewModel()),
       ],
       child: const MyApp(),
     ),
