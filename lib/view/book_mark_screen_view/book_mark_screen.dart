@@ -26,7 +26,8 @@ class BookMarkScreenState extends State<BookMarkScreen> {
         builder: (context, bookmarkProvider, child) {
           return Column(
             children: [
-              ListView.builder(
+              Expanded(
+                child: ListView.builder(
                   itemCount: bookmarkProvider.markedBooksList.length,
                   itemBuilder: (context, index) {
                     final book = bookmarkProvider.markedBooksList[index];
@@ -41,7 +42,9 @@ class BookMarkScreenState extends State<BookMarkScreen> {
                             ),
                           );
                         });
-                  })
+                  },
+                ),
+              )
             ],
           );
         },
