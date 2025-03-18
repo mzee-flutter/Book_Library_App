@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:BookMate_Pro/view/single_book_screen/single_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:BookMate_Pro/utils/custom_book_card/small_book_card.dart';
@@ -52,3 +54,5 @@ class BookMarkScreenState extends State<BookMarkScreen> {
     );
   }
 }
+
+/// checking the last chat of the gpt for the marked book display issue...
