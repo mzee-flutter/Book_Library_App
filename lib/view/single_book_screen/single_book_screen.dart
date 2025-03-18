@@ -3,6 +3,7 @@ import 'package:BookMate_Pro/view_model/app_themes_view_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../view_model/author_info_view_model/author_books_view_model.dart';
 import '../../view_model/book_mark_view_model.dart';
@@ -125,24 +126,30 @@ class SingleBookScreenState extends State<SingleBookScreen>
                           ),
                           Consumer<BookMarkViewModel>(
                             builder: (context, bookMarkProvider, child) {
+                              bool isBookmarked = bookMarkProvider
+                                  .isBookmarked(widget.fullBook);
                               return Positioned(
                                 bottom: -25.r,
                                 right: 25.r,
                                 child: FloatingActionButton(
                                   onPressed: () {
-                                    ///checking that the book is add or not to fire store
-                                    ///also checking the icon toggling
-                                    bookMarkProvider
-                                        .addBookMark(widget.fullBook);
+                                    if (isBookmarked) {
+                                      bookMarkProvider
+                                          .removeBookmark(widget.fullBook);
+                                    } else {
+                                      bookMarkProvider
+                                          .addBookMark(widget.fullBook);
+                                    }
                                   },
                                   shape: const CircleBorder(),
                                   backgroundColor:
                                       Theme.of(context).colorScheme.surface,
                                   elevation: 5,
                                   child: Icon(
-                                    bookMarkProvider.isBookmarked
-                                        ? Icons.bookmark_rounded
-                                        : Icons.bookmark_border,
+                                    bookMarkProvider
+                                            .isBookmarked(widget.fullBook)
+                                        ? FontAwesomeIcons.solidBookmark
+                                        : FontAwesomeIcons.bookmark,
                                     color: Theme.of(context).primaryColor,
                                   ),
                                 ),
