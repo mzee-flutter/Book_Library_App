@@ -15,7 +15,9 @@ class SearchScreenAppBar extends StatelessWidget
         return AppBar(
           automaticallyImplyLeading: false,
           elevation: 3,
-          leading: const Icon(Icons.arrow_back_rounded),
+          leading: const Icon(
+            Icons.arrow_back_rounded,
+          ),
           actions: [
             Expanded(
               child: Padding(
@@ -33,6 +35,7 @@ class SearchScreenAppBar extends StatelessWidget
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none),
                     suffixIcon: InkWell(
+                      splashColor: Colors.transparent,
                       onTap: () {
                         searchProvider.clearSearch();
                       },
