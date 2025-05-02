@@ -146,8 +146,7 @@ class SingleBookScreenState extends State<SingleBookScreen>
                                       Theme.of(context).colorScheme.surface,
                                   elevation: 5,
                                   child: Icon(
-                                    bookMarkProvider
-                                            .isBookmarked(widget.fullBook)
+                                    isBookmarked
                                         ? FontAwesomeIcons.solidBookmark
                                         : FontAwesomeIcons.bookmark,
                                     color: Theme.of(context).primaryColor,
