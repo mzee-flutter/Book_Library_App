@@ -11,9 +11,13 @@ class SmallBookCard extends StatelessWidget {
     super.key,
     required this.book,
     required this.onTap,
+    this.icon,
+    this.onBookmarkTap,
   });
   final Book book;
   final VoidCallback onTap;
+  final IconData? icon;
+  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +57,31 @@ class SmallBookCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: 180,
-                          child: Text(
-                            book.volumeInfo?.title ?? 'Unknown',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  book.volumeInfo?.title ?? 'Unknown',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 10.r),
+                                child: InkWell(
+                                  onTap: onBookmarkTap,
+                                  child: Icon(
+                                    icon,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 22.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(
@@ -91,7 +115,7 @@ class SmallBookCard extends StatelessWidget {
                         )
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
