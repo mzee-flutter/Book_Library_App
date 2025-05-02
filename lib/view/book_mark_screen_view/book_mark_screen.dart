@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:BookMate_Pro/view/single_book_screen/single_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:BookMate_Pro/utils/custom_book_card/small_book_card.dart';
 import 'package:provider/provider.dart';
-
 import '../../view_model/book_mark_view_model.dart';
 
 class BookMarkScreen extends StatefulWidget {
