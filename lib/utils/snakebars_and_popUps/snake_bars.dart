@@ -3,8 +3,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
 class SnakeBars {
-  static flutterToast(String message) {
-    Fluttertoast.showToast(msg: message);
+  static flutterToast(String message, context) {
+    Fluttertoast.showToast(
+      msg: message,
+      backgroundColor: Theme.of(context).primaryColor,
+      fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+      textColor: Theme.of(context).colorScheme.surface,
+    );
   }
 
   static flutterFlashBar(String message, context) {
