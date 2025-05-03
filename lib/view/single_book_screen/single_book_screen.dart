@@ -1,3 +1,4 @@
+import 'package:BookMate_Pro/utils/snakebars_and_popUps/snake_bars.dart';
 import 'package:BookMate_Pro/view/single_book_screen/outline_tab_view.dart';
 import 'package:BookMate_Pro/view_model/app_themes_view_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -136,9 +137,13 @@ class SingleBookScreenState extends State<SingleBookScreen>
                                     if (isBookmarked) {
                                       bookMarkProvider
                                           .removeBookmark(widget.fullBook);
+                                      SnakeBars.flutterToast(
+                                          'Removed successfully.', context);
                                     } else {
                                       bookMarkProvider
                                           .addBookMark(widget.fullBook);
+                                      SnakeBars.flutterToast(
+                                          'Book saved successfully!.', context);
                                     }
                                   },
                                   shape: const CircleBorder(),
