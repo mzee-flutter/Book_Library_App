@@ -45,7 +45,7 @@ class SearchScreenAppBar extends StatelessWidget
                   onFieldSubmitted: (value) {
                     final title = searchProvider.controller.text.trim();
                     title.isEmpty
-                        ? SnakeBars.flutterToast('Invalid Input')
+                        ? SnakeBars.flutterToast('Invalid Input', context)
                         : searchProvider.fetchBooksBySearch(title);
                   },
                 ),
